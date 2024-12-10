@@ -27,11 +27,12 @@ const Header = () => {
     <HeaderWrapper>
       <h1>JourneyHub</h1>
       <Nav>
-        <Link to="/">Home</Link> |
-        <Link to="/vision"> Vision</Link> |
-        <Link to="/endpoints"> Endpoints</Link> |
-        <Link to="/login">Login</Link> |
-        <Link to="/admin">Administration</Link>
+        <Link to="/">Home</Link> 
+        <Link to="/vision"> Vision</Link> 
+        <Link to="/endpoints"> Endpoints</Link> 
+        <Link to="/login">Login</Link> 
+        <Link to="/admin">Administration</Link> 
+        <Link to="/country-info"> Country Info</Link>
       </Nav>
     </HeaderWrapper>
   );
