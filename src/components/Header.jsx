@@ -10,6 +10,16 @@ const HeaderWrapper = styled.header`
 
 const Nav = styled.nav`
   margin-top: 10px;
+
+  a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;
 
 const Header = () => {
@@ -17,9 +27,11 @@ const Header = () => {
     <HeaderWrapper>
       <h1>JourneyHub</h1>
       <Nav>
-        <Link to="/">Home</Link> | 
-        <Link to="/vision"> Vision</Link> | 
-        <Link to="/endpoints"> Endpoints</Link> | 
+        <Link to="/">Home</Link> 
+        <Link to="/vision"> Vision</Link> 
+        <Link to="/endpoints"> Endpoints</Link> 
+        <Link to="/login">Login</Link> 
+        <Link to="/admin">Administration</Link> 
         <Link to="/country-info"> Country Info</Link>
       </Nav>
     </HeaderWrapper>
@@ -27,3 +39,4 @@ const Header = () => {
 };
 
 export default Header;
+

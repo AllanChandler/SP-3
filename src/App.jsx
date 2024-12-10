@@ -5,6 +5,11 @@ import Footer from './components/Footer';
 import MainPage from './pages/MainPage';
 import VisionPage from './pages/VisionPage';
 import EndpointsPage from './pages/EndpointsPage';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import GlobalStyle from './styles/GlobalStyle';
+import Login from './pages/Login';
+import TravelAdministration from './pages/TravelAdministration';
 import CountryInfoPage from './pages/CountryInfoPage'; 
 
 const App = () => {
@@ -16,6 +21,8 @@ const App = () => {
         <Route path="/" element={<MainPage />} />
         <Route path="/vision" element={<VisionPage />} />
         <Route path="/endpoints" element={<EndpointsPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/admin" element={<TravelAdministration />} />
         <Route path="/country-info" element={<CountryInfoPage />} /> 
       </Routes>
       <Footer />
