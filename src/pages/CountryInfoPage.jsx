@@ -6,7 +6,7 @@ const CountryInfoPage = () => {
   const [currentCountryCode, setCurrentCountryCode] = useState(null);
 
   const handleCountryClick = (countryCode) => {
-    setCurrentCountryCode(countryCode); // Update the selected country code
+    setCurrentCountryCode(countryCode); 
   };
 
   return (
@@ -16,7 +16,7 @@ const CountryInfoPage = () => {
         setCurrentCountryCode={setCurrentCountryCode} 
       />
       <div className="map-container">
-        <CountryMapSelection onClick={handleCountryClick} /> {/* This renders the map */}
+        <CountryMapSelection onClick={handleCountryClick} /> 
       </div>
     </div>
   );
