@@ -1,4 +1,3 @@
-// App.jsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GlobalStyle from './styles/GlobalStyle';
 import Header from './components/Header';
@@ -6,7 +5,7 @@ import Footer from './components/Footer';
 import MainPage from './pages/MainPage';
 import VisionPage from './pages/VisionPage';
 import EndpointsPage from './pages/EndpointsPage';
-import CountryInfoPage from './pages/CountryInfoPage'; // Import the CountryInfoPage
+import CountryInfoPage from './pages/CountryInfoPage'; 
 
 const App = () => {
   return (

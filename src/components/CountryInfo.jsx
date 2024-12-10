@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import CountryMapSelection from './CountryMapSelection';
 
 const CountryInfoWrapper = styled.div`
   display: flex;
@@ -25,7 +24,7 @@ const CountryInfoText = styled.p`
   margin: 5px 0;
 `;
 
-const CountryInfo = ({ currentCountryCode, setCurrentCountryCode }) => {
+const CountryInfo = ({ currentCountryCode }) => {
   const [countryData, setCountryData] = useState(null);
 
   useEffect(() => {
@@ -33,14 +32,12 @@ const CountryInfo = ({ currentCountryCode, setCurrentCountryCode }) => {
       const fetchCountryData = async () => {
         try {
           const countryCode = currentCountryCode.toLowerCase().substring(0, 2);
-
           const response = await fetch(`https://restcountries.com/v3.1/alpha/${countryCode}`);
           const data = await response.json();
 
           if (data && data[0]) {
             const country = data[0];
             setCountryData({
-              id: countryCode,
               name: country.name.common,
               population: country.population,
               area: country.area,
@@ -61,10 +58,9 @@ const CountryInfo = ({ currentCountryCode, setCurrentCountryCode }) => {
   return (
     <CountryInfoWrapper>
       <StyledCountryInfo>
-        <CountryInfoTitle>Country Info</CountryInfoTitle>
-        {countryData ? (
+      <CountryInfoTitle>Click on a Country in Europe to Explore Its Details</CountryInfoTitle>
+      {countryData ? (
           <div>
-            <CountryInfoText><strong>ID:</strong> {countryData.id}</CountryInfoText>
             <CountryInfoText><strong>Name:</strong> {countryData.name}</CountryInfoText>
             <CountryInfoText><strong>Population:</strong> {countryData.population.toLocaleString()}</CountryInfoText>
             <CountryInfoText><strong>Area:</strong> {countryData.area.toLocaleString()}</CountryInfoText>
@@ -73,19 +69,12 @@ const CountryInfo = ({ currentCountryCode, setCurrentCountryCode }) => {
           <CountryInfoText>Select a country to see its details</CountryInfoText>
         )}
       </StyledCountryInfo>
-
-      <div className="map-container">
-        <CountryMapSelection 
-          onClick={(countryCode) => setCurrentCountryCode(countryCode)}  
-        />
-      </div>
     </CountryInfoWrapper>
   );
 };
 
 CountryInfo.propTypes = {
   currentCountryCode: PropTypes.string,
-  setCurrentCountryCode: PropTypes.func,
 };
 
 export default CountryInfo;
