@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import EuropeMap from './assets/EuropeMap';
+import EuropeMap from '../assets/EuropeMap';
 
 const CountryMapSelection = ({ onClick }) => {
   const handleCountryClick = (e) => {
