@@ -1,5 +1,15 @@
 import PropTypes from 'prop-types';
-import EuropeMap from '../assets/EuropeMap'; 
+import EuropeMap from '../assets/EuropeMap';
+import styled from 'styled-components';
+
+const MapContainer = styled.div`
+  width: 680px;  /* Set width to 680px */
+  height: 520px; /* Set height to 520px */
+  margin: 20px auto; /* Centering the map */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const CountryMapSelection = ({ onClick }) => {
   const handleCountryClick = (e) => {
@@ -10,7 +20,7 @@ const CountryMapSelection = ({ onClick }) => {
 
       const countries = document.querySelectorAll('path');
       countries.forEach((country) => {
-        country.style.fill = '';  
+        country.style.fill = ''; 
       });
 
       const selectedCountry = document.getElementById(countryId);
@@ -21,14 +31,14 @@ const CountryMapSelection = ({ onClick }) => {
   };
 
   return (
-    <div>
+    <MapContainer>
       <EuropeMap onClick={handleCountryClick} />
-    </div>
+    </MapContainer>
   );
 };
 
 CountryMapSelection.propTypes = {
-  onClick: PropTypes.func.isRequired,  
+  onClick: PropTypes.func.isRequired,
 };
 
 export default CountryMapSelection;
