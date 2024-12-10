@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import CountryInfo from '../components/CountryInfo'; 
-import EuropeMap from '../assets/EuropeMap'; 
+import CountryMapSelection from '../components/CountryMapSelection'; 
 
 const CountryInfoPage = () => {
   const [currentCountryCode, setCurrentCountryCode] = useState(null);
@@ -11,10 +11,9 @@ const CountryInfoPage = () => {
 
   return (
     <div className="country-info-page">
-      <h1>Country Information</h1>
       <CountryInfo currentCountryCode={currentCountryCode} setCurrentCountryCode={setCurrentCountryCode} />
       <div className="map-container">
-        <EuropeMap onClick={handleCountryClick} />
+        <CountryMapSelection onClick={handleCountryClick} />
       </div>
     </div>
   );
