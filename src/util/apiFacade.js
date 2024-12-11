@@ -1,4 +1,4 @@
-const URL = 'https://travel.schoolcode.dk/travel'; // Your base URL
+const URL = 'https://travel.schoolcode.dk/travel';
 
 function handleHttpErrors(res) {
     if (!res.ok) {
@@ -24,36 +24,53 @@ function apiFacade() {
         localStorage.removeItem('jwtToken');
     };
 
-    const register = (username, password) => {
-        const options = makeOptions('POST', false, { username, password });
-        return fetch(URL + '/auth/register', options)
-            .then(handleHttpErrors)
-            .then(() => {
-                // Handle success here (optional, e.g., show a success message)
-            })
-            .catch((err) => {
-                console.error('Registration error:', err);
-                throw err; // Handle error (e.g., username already taken)
-            });
+    const getUserRoles = () => {
+        const token = getToken();
+        if (token != null) {
+            const payloadBase64 = token.split('.')[1];
+            const decodedClaims = JSON.parse(window.atob(payloadBase64));
+            const roles = decodedClaims.roles;
+            return roles;
+        } else {
+            return '';
+        }
     };
+
+    const hasUserAccess = (neededRole, loggedIn) => {
+        const roles = getUserRoles().split(',');
+        console.log(roles)
+        return loggedIn && roles.some(role => role.toUpperCase() === neededRole.toUpperCase());
+    };
+    
 
     const login = (user, password) => {
         const options = makeOptions('POST', false, { username: user, password: password });
         return fetch(URL + '/auth/login', options)
             .then(handleHttpErrors)
             .then((res) => {
-                setToken(res.token); // Now using 'res' to save the token
+                setToken(res.token);
+            });
+    };
+
+    const register = (user, password) => {
+        const options = makeOptions('POST', false, { username: user, password: password });
+        return fetch(URL + '/auth/register', options)
+            .then(handleHttpErrors)
+            .then((res) => {
+                setToken(res.token);
             });
     };
 
     const fetchData = (endpoint) => {
         const options = makeOptions('GET', true);
         return fetch(URL + endpoint, options)
-            .then(handleHttpErrors)
+            .then(handleHttpErrors) 
             .catch((err) => {
-                throw err;
+                throw err; 
             });
     };
+    
+    
 
     const makeOptions = (method, addToken, body) => {
         const opts = {
@@ -73,13 +90,15 @@ function apiFacade() {
     };
 
     return {
+        makeOptions,
         setToken,
         getToken,
         loggedIn,
-        logout,
-        register,
         login,
+        register,
+        logout,
         fetchData,
+        hasUserAccess,
     };
 }
 

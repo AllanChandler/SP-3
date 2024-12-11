@@ -1,21 +1,13 @@
 import { useState } from 'react';
-import facade from '../util/apiFacade'; // Import facade for API calls
+import PropTypes from 'prop-types';  
 
-function LogIn() {
+function LogIn({ login }) {
   const init = { username: '', password: '' };
   const [loginCredentials, setLoginCredentials] = useState(init);
 
   const performLogin = (evt) => {
     evt.preventDefault();
-    facade.login(loginCredentials.username, loginCredentials.password)
-      .then(() => {
-        // Redirect to homepage after successful login
-        window.location.href = '/';
-      })
-      .catch((err) => {
-        console.error('Login failed', err);
-        // Handle error (e.g., show a message to the user)
-      });
+    login(loginCredentials.username, loginCredentials.password); // Call login function from props
   };
 
   const onChange = (evt) => {
@@ -44,5 +36,9 @@ function LogIn() {
     </div>
   );
 }
+
+LogIn.propTypes = {
+  login: PropTypes.func.isRequired,
+};
 
 export default LogIn;
