@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CountryInfo from '../components/CountryInfo';
 import CountryMapSelection from '../components/CountryMapSelection';
+import Footer from '../components/Footer';
 
 const CountryInfoPage = () => {
   const [currentCountryCode, setCurrentCountryCode] = useState(null);
@@ -10,6 +11,7 @@ const CountryInfoPage = () => {
   };
 
   return (
+    <>
     <div className="country-info-page">
       <CountryInfo 
         currentCountryCode={currentCountryCode} 
@@ -19,6 +21,8 @@ const CountryInfoPage = () => {
         <CountryMapSelection onClick={handleCountryClick} /> 
       </div>
     </div>
+    <Footer isSticky={false} />
+    </>
   );
 };
 

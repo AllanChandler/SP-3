@@ -1,3 +1,5 @@
+import Footer from "../components/Footer";
+
 const EndpointsTable = () => {
   const endpoints = [
     {
@@ -205,6 +207,7 @@ const EndpointsTable = () => {
           ))}
         </tbody>
       </table>
+      <Footer isSticky={false} />
     </div>
   );
 };
