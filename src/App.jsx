@@ -9,6 +9,8 @@ import TravelAdministration from './pages/TravelAdministration';
 import CountryInfoPage from './pages/CountryInfoPage'; 
 import BookingRegister from './pages/BookingRegister'; 
 import OrderConfirmation from './pages/OrderConfirmation';
+import Register from './pages/Register'; 
+
 
 const App = () => {
   return (
@@ -20,6 +22,7 @@ const App = () => {
         <Route path="/vision" element={<VisionPage />} />
         <Route path="/endpoints" element={<EndpointsPage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} /> {/* Register route */}
         <Route path="/admin" element={<TravelAdministration />} />
         <Route path="/country-info" element={<CountryInfoPage />} /> 
         <Route path="/booking" element={<BookingRegister />} />

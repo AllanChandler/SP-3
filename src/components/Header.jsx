@@ -45,8 +45,9 @@ const Header = () => {
         <Link to="/">Home</Link> |
         <Link to="/vision"> Vision</Link> |
         <Link to="/endpoints"> Endpoints</Link> |
-        <Link to="/login">Login</Link> |
         <Link to="/admin">Administration</Link> |
+        <Link to="/login">Login</Link> |
+        <Link to="/register">register</Link> |
         <Link to="/country-info"> Country Info</Link>
       </Nav>
     </HeaderWrapper>

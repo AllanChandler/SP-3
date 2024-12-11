@@ -1,8 +1,7 @@
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import Footer from '../components/Footer';
-
-
-
 
 const Box = styled.div`
   background-color: #efeded;
@@ -52,25 +51,67 @@ const Button = styled.button`
   }
 `;
 
-
-
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const history = useHistory();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('http://travel.schoolcode.dk/travel/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: email, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token); // Store the token in localStorage
+        history.push('/main'); // Redirect to MainPage after login
+      } else {
+        const data = await response.json();
+        setError(data.msg || 'Failed to login');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      setError('An error occurred while trying to log in.');
+    }
+  };
+
   return (
     <>
       <Box>
         <LoginCenter>
           <h1>Sign in</h1>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
         </LoginCenter>
 
         <FormContainer>
-          <form className="generic-form" method="post">
-            <input type="text" name="email" placeholder="Email*" required />
-            <input type="password" name="password" placeholder="Password*" required />
-            <Button type="submit" formaction="/login">Login</Button>
-            
+          <form className="generic-form" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="email"
+              placeholder="Email*"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password*"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <Button type="submit">Login</Button>
           </form>
         </FormContainer>
-
       </Box>
       <Footer isSticky={true} />
     </>
@@ -78,4 +119,3 @@ const Login = () => {
 };
 
 export default Login;
-
