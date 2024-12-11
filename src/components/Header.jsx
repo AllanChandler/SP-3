@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Logo from '../assets/Logo.png'; // Update the path as needed
+import Logo from '../assets/logo.png'; // Update the path as needed
 
 
 const HeaderWrapper = styled.header`
