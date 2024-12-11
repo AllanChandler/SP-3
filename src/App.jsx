@@ -1,16 +1,14 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import GlobalStyle from './styles/GlobalStyle';
 import Header from './components/Header';
-import Footer from './components/Footer';
 import MainPage from './pages/MainPage';
 import VisionPage from './pages/VisionPage';
 import EndpointsPage from './pages/EndpointsPage';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import GlobalStyle from './styles/GlobalStyle';
 import Login from './pages/Login';
 import TravelAdministration from './pages/TravelAdministration';
 import CountryInfoPage from './pages/CountryInfoPage'; 
+import BookingRegister from './pages/BookingRegister'; 
+import OrderConfirmation from './pages/OrderConfirmation';
 
 const App = () => {
   return (
@@ -24,8 +22,12 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/admin" element={<TravelAdministration />} />
         <Route path="/country-info" element={<CountryInfoPage />} /> 
+        <Route path="/booking" element={<BookingRegister />} />
+        <Route path="/confirmation" element={<OrderConfirmation />} />
+
+        
+
       </Routes>
-      <Footer />
     </Router>
   );
 };

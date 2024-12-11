@@ -1,11 +1,14 @@
-import React from 'react';
+import Footer from '../components/Footer';
 
 const TravelAdministration = () => {
   return (
+    <>
     <div>
       <h2>Rejseadministration</h2>
       <p>Her kan du administrere rejser og bruge administrative funktioner.</p>
     </div>
+    <Footer isSticky={true} />
+    </>
   );
 };
 

@@ -1,27 +1,30 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from "react-router";
+import Footer from '../components/Footer';
 
 const MainWrapper = styled.div`
-  text-align: center;
-  padding: 40px;
-  background-color: #f4f4f9;
+height: 100%;
 `;
 
-const Title = styled.h1`
-  font-size: 2.5rem;
-  color: #2a3d4f;
-  margin-bottom: 10px;
+const Subtitle = styled.h2`
+  font-size: 1.6rem;
+  color: #154985;
+  margin-bottom: 40px;
+  font-weight: 500;
+  font-style: italic;
+  text-align: center;
 `;
 
 const SearchForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 700px;
   margin: 0 auto;
 `;
 
@@ -29,39 +32,96 @@ const InputGroup = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  gap: 15px;
 `;
 
 const Select = styled.select`
-  padding: 10px;
+  padding: 12px;
   font-size: 1rem;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 8px;
   width: 48%;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #2a3d4f;
+    box-shadow: 0 0 5px rgba(42, 61, 79, 0.3);
+  }
+`;
+
+const Input = styled.input`
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 48%;
+  background-color: #f9f9f9;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #2a3d4f;
+    box-shadow: 0 0 5px rgba(42, 61, 79, 0.3);
+  }
 `;
 
 const Button = styled.button`
-  background-color: #2a3d4f;
+  background-color: #154985;
   color: #fff;
-  font-size: 1rem;
-  padding: 10px 20px;
+  font-size: 1.1rem;
+  padding: 12px 30px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 200px;
+  transition: background-color 0.3s ease;
 
   &:hover {
     background-color: #1e2d3a;
   }
+
+  &:active {
+    background-color: #162234;
+  }
 `;
 
 const MainPage = () => {
+
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    departure: '',
+    departure: '', // Sørg for, at den initiale værdi er tom
     destination: '',
     departureDate: '',
     returnDate: '',
     tripType: 'round-trip',
   });
+
+  const [destinations, setDestinations] = useState([]);
+
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        const response = await fetch('http://localhost:7070/travel/destinations');
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Fetched destinations:', data); // Tjek API-data i konsollen
+          setDestinations(data);
+        } else {
+          console.error('Failed to fetch destinations:', response.status, response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching destinations:', error);
+      }
+    };
+
+    fetchDestinations();
+  }, []);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -72,13 +132,12 @@ const MainPage = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // API-kald logik for at hente rejser baseret på formData
     console.log('Søgeparametre:', formData);
   };
 
   return (
     <MainWrapper>
-      <Title>Velkommen til JourneyHub</Title>
+      <Subtitle>De bedste rejseoplevelser – fra hvor som helst, til hvor som helst</Subtitle>
       <SearchForm onSubmit={handleSearch}>
         <InputGroup>
           <Select
@@ -87,11 +146,11 @@ const MainPage = () => {
             onChange={handleInputChange}
           >
             <option value="">Vælg afgangssted</option>
-            <option value="Copenhagen, Denmark">København, Danmark</option>
-            <option value="Tangier, Morocco">Tangier, Marokko</option>
-            <option value="Paris, France">Paris, Frankrig</option>
-            <option value="Berlin, Germany">Berlin, Tyskland</option>
-            <option value="New York, USA">New York, USA</option>
+            {destinations.map((destination) => (
+              <option key={destination.id} value={`${destination.city}, ${destination.country}`}>
+                {destination.city}, {destination.country}
+              </option>
+            ))}
           </Select>
           <Select
             name="destination"
@@ -99,21 +158,21 @@ const MainPage = () => {
             onChange={handleInputChange}
           >
             <option value="">Vælg destination</option>
-            <option value="Copenhagen, Denmark">København, Danmark</option>
-            <option value="Tangier, Morocco">Tangier, Marokko</option>
-            <option value="Paris, France">Paris, Frankrig</option>
-            <option value="Berlin, Germany">Berlin, Tyskland</option>
-            <option value="New York, USA">New York, USA</option>
+            {destinations.map((destination) => (
+              <option key={destination.id} value={`${destination.city}, ${destination.country}`}>
+                {destination.city}, {destination.country}
+              </option>
+            ))}
           </Select>
         </InputGroup>
         <InputGroup>
-          <input
+          <Input
             type="date"
             name="departureDate"
             value={formData.departureDate}
             onChange={handleInputChange}
           />
-          <input
+          <Input
             type="date"
             name="returnDate"
             value={formData.returnDate}
@@ -129,10 +188,15 @@ const MainPage = () => {
           <option value="round-trip">Tur/retur</option>
           <option value="one-way">Enkeltvej</option>
         </Select>
-        <Button type="submit">Søg</Button>
+        <Button type="submit" onClick={() => navigate("/destinations")}>
+          Søg
+        </Button>
       </SearchForm>
+      <Footer isSticky={true} />
     </MainWrapper>
   );
 };
 
 export default MainPage;
+
+
