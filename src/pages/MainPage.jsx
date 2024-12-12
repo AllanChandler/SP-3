@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from "react-router";
+import { useNavigate } from 'react-router-dom';
 import Footer from '../components/Footer';
 
 const MainWrapper = styled.div`
-height: 100%;
+  height: 100%;
 `;
 
 const Subtitle = styled.h2`
@@ -91,11 +91,9 @@ const Button = styled.button`
 `;
 
 const MainPage = () => {
-
   const navigate = useNavigate();
-
   const [formData, setFormData] = useState({
-    departure: '', // Sørg for, at den initiale værdi er tom
+    departure: '',
     destination: '',
     departureDate: '',
     returnDate: '',
@@ -110,7 +108,6 @@ const MainPage = () => {
         const response = await fetch('https://travel.schoolcode.dk/travel/destinations');
         if (response.ok) {
           const data = await response.json();
-          console.log('Fetched destinations:', data); // Tjek API-data i konsollen
           setDestinations(data);
         } else {
           console.error('Failed to fetch destinations:', response.status, response.statusText);
@@ -132,7 +129,7 @@ const MainPage = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log('Søgeparametre:', formData);
+    navigate("/destinations", { state: formData }); // Send formData to Destinations page
   };
 
   return (
@@ -186,11 +183,8 @@ const MainPage = () => {
           onChange={handleInputChange}
         >
           <option value="round-trip">Tur/retur</option>
-          <option value="one-way">Enkeltvej</option>
         </Select>
-        <Button type="submit" onClick={() => navigate("/destinations")}>
-          Søg
-        </Button>
+        <Button type="submit">Søg</Button>
       </SearchForm>
       <Footer isSticky={true} />
     </MainWrapper>
@@ -198,5 +192,6 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
 
 
