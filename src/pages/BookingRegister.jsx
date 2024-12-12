@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Footer from '../components/Footer';
@@ -6,7 +7,7 @@ import Footer from '../components/Footer';
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Ensure the page takes the full height of the screen */
+  min-height: 100vh;
 `;
 
 const Container = styled.div`
@@ -17,9 +18,8 @@ const Container = styled.div`
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   max-width: 600px;
   margin: 50px auto;
-  flex-grow: 1; /* Allow this container to grow and fill available space */
+  flex-grow: 1;
 `;
-
 
 const Form = styled.form`
   display: flex;
@@ -39,12 +39,6 @@ const Input = styled.input`
   border: 1px solid #ddd;
   border-radius: 5px;
   width: 100%;
-
-  &:focus {
-    outline: none;
-    border-color: #154985;
-    box-shadow: 0 0 4px rgba(21, 73, 133, 0.3);
-  }
 `;
 
 const SubmitButton = styled.button`
@@ -56,14 +50,12 @@ const SubmitButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
-
-  &:hover {
-    background-color: #123a6d;
-  }
 `;
 
 const BookingRegister = () => {
-  // State to manage form data
+  const location = useLocation();
+  const { selectedFlightData } = location.state || {}; // Get the selected flight data passed from DestinationsOverView
+  
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -78,7 +70,6 @@ const BookingRegister = () => {
     cardname: '',
   });
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -87,13 +78,43 @@ const BookingRegister = () => {
     });
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // You can now handle the form data, e.g., send it to an API or handle it locally
-    console.log(formData);
-    alert("Form Submitted");
+
+    // Create an object with only the necessary flight data and user information
+    const bookingData = {
+      destinationCity: selectedFlightData.arrivalCity,
+      departureDate: selectedFlightData.departureDate,
+      arrivalDate: selectedFlightData.returnDate,
+      bookingDate: new Date().toISOString(), // Set the current date as booking date
+    };
+
+    // Your submit logic here (e.g., send data to the API)
+    console.log('Booking Data:', bookingData);
+    
+    // Assuming you are sending the data to an API:
+    // fetch('/your-api-endpoint', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(bookingData),
+    // })
+    //   .then(response => response.json())
+    //   .then(data => console.log(data))
+    //   .catch(error => console.error('Error:', error));
   };
+
+  // Check if all required fields are filled out
+  const isFormValid =
+    formData.email &&
+    formData.password1 &&
+    formData.password2 &&
+    formData.password1 === formData.password2 &&
+    formData.firstname &&
+    formData.lastname &&
+    formData.phonenumber &&
+    formData.nationality;
 
   return (
     <PageWrapper>
@@ -184,7 +205,10 @@ const BookingRegister = () => {
             value={formData.cardname}
             onChange={handleInputChange}
           />
-          <SubmitButton type="submit">Submit</SubmitButton>
+          
+          <SubmitButton type="submit" disabled={!isFormValid}>
+            Submit
+          </SubmitButton>
         </Form>
       </Container>
       <Footer isSticky={false} />
@@ -193,3 +217,5 @@ const BookingRegister = () => {
 };
 
 export default BookingRegister;
+
+

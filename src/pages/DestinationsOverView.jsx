@@ -114,7 +114,6 @@ const DestinationsOverView = () => {
   // For demonstration purposes, we'll simulate a flight search result based on the formData.
   const flightOptions = [
     {
-      flightNumber: "Ryanair",
       departureCity: formData.departure,
       departureTime: "12.25",
       arrivalCity: formData.destination,
@@ -122,7 +121,6 @@ const DestinationsOverView = () => {
       duration: "3 t. 50 min.",
       direct: true,
       returnFlight: {
-        flightNumber: "Ryanair",
         departureCity: formData.destination,
         departureTime: "17.50",
         arrivalCity: formData.departure,
@@ -133,7 +131,6 @@ const DestinationsOverView = () => {
       price: "1.224 kr."
     },
     {
-      flightNumber: "SAS",
       departureCity: formData.departure,
       departureTime: "10.00",
       arrivalCity: formData.destination,
@@ -141,7 +138,6 @@ const DestinationsOverView = () => {
       duration: "4 t. 0 min.",
       direct: true,
       returnFlight: {
-        flightNumber: "SAS",
         departureCity: formData.destination,
         departureTime: "15.30",
         arrivalCity: formData.departure,
@@ -160,8 +156,17 @@ const DestinationsOverView = () => {
 
   // Funktion til at bekræfte valget og navigere til OrderConfirmation
   const handleConfirm = () => {
-    navigate('/confirmation', { state: { selectedFlight } }); 
+    const selectedFlightData = {
+      ...selectedFlight,
+      departureCity: formData.departure,
+      arrivalCity: formData.destination,
+      departureDate: formData.departureDate,
+      returnDate: formData.returnDate || null,
+      bookingDate: new Date().toISOString(), // Set the current date as booking date
+    };
+    navigate('/booking', { state: { selectedFlightData } });
   };
+  
 
   return (
     <Wrapper>
