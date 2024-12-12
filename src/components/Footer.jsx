@@ -23,14 +23,12 @@ const Footer = ({ isSticky }) => {
   );
 };
 
-// Props validation with PropTypes
 Footer.propTypes = {
-  isSticky: PropTypes.bool, // isSticky should be a boolean
+  isSticky: PropTypes.bool, 
 };
 
-// Optional default prop (if isSticky is not provided)
 Footer.defaultProps = {
-  isSticky: false, // Default value for isSticky if not passed
+  isSticky: false, 
 };
 
 export default Footer;

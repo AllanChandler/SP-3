@@ -1,65 +1,26 @@
-// OrderConfirmation.js
-import styled from 'styled-components';
-import Footer from '../components/Footer';  // Sørg for at importere din Footer-komponent korrekt
-
-const ConfirmationWrapper = styled.div`
-  padding: 40px;
-  background-color: #f0f4f8;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;  // Sørger for at indholdet fylder hele skærmen
-  text-align: center;
-`;
-
-const Title = styled.h1`
-  font-size: 2.5rem;
-  color: #2a3d4f;
-  margin-bottom: 20px;
-`;
-
-const Message = styled.p`
-  font-size: 1.2rem;
-  color: #555;
-  margin-top: 20px;
-`;
-
-const Button = styled.button`
-  background-color: #2a3d4f;
-  color: #fff;
-  font-size: 1.1rem;
-  padding: 12px 25px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 20px;
-  width: 100%;
-  max-width: 200px;
-
-  &:hover {
-    background-color: #1e2d3a;
-  }
-
-  &:active {
-    background-color: #162234;
-  }
-`;
+import { useLocation } from 'react-router-dom';
 
 const OrderConfirmation = () => {
+  const location = useLocation();
+  const { selectedFlight } = location.state || {};
+
   return (
-    <ConfirmationWrapper>
-      <div>
-        <Title>Tak for din bestilling!</Title>
-        <Message>
-          Din bestilling er blevet modtaget. Vi sender dig en bekræftelse på e-mail.
-        </Message>
-        <Button onClick={() => window.location.href = "/"}>Tilbage til forsiden</Button>
-      </div>
-      
-      <Footer isSticky={true} />
-    </ConfirmationWrapper>
+    <div>
+      <h1>Order Confirmation</h1>
+      {selectedFlight ? (
+        <div>
+          <p>Du har valgt følgende fly:</p>
+          <p>Udgående flyrejse: {selectedFlight.departureCity} - {selectedFlight.arrivalCity}</p>
+          <p>Indgående flyrejse: {selectedFlight.returnFlight.departureCity} - {selectedFlight.returnFlight.arrivalCity}</p>
+          <p>Pris: {selectedFlight.price}</p>
+        </div>
+      ) : (
+        <p>Ingen valg er blevet bekræftet.</p>
+      )}
+    </div>
   );
 };
 
 export default OrderConfirmation;
+
 
