@@ -1,7 +1,7 @@
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Logo from '../assets/logo.png'; // Update the path as needed
-
+import Logo from '../assets/logo.png'; 
 
 const HeaderWrapper = styled.header`
   background-color: #041635;
@@ -16,9 +16,9 @@ const LogoContainer = styled.div`
 `;
 
 const LogoImage = styled.img`
-  width: 150px;  // Adjust size as needed
+  width: 150px;
   height: auto;
-  margin-left: 60px;  // Add some space from the left edge
+  margin-left: 60px;
 `;
 
 const Nav = styled.nav`
@@ -35,22 +35,63 @@ const Nav = styled.nav`
   }
 `;
 
-const Header = () => {
+const WelcomeSection = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+
+  span {
+    font-size: 16px;
+    color: white;
+    margin-right: 10px;
+  }
+
+  button {
+    padding: 5px 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+
+    &:hover {
+      background-color: #d32f2f;
+    }
+  }
+`;
+
+const Header = ({ loggedIn, username, logout }) => {
   return (
     <HeaderWrapper>
-       <LogoContainer>
+      <LogoContainer>
         <LogoImage src={Logo} alt="Logo" />
       </LogoContainer>
       <Nav>
         <Link to="/">Home</Link> |
-        <Link to="/vision"> Vision</Link> |
-        <Link to="/endpoints"> Endpoints</Link> |
+        <Link to="/vision">Vision</Link> |
+        <Link to="/endpoints">Endpoints</Link> |
         <Link to="/login">Login</Link> |
+        <Link to="/register">Register</Link> | 
         <Link to="/admin">Administration</Link> |
-        <Link to="/country-info"> Country Info</Link>
+        <Link to="/country-info">Country Info</Link>
       </Nav>
+
+      {loggedIn ? (
+        <WelcomeSection>
+          <span>Welcome, {username}</span>
+          <button onClick={logout}>Logout</button>
+        </WelcomeSection>
+      ) : null}
     </HeaderWrapper>
   );
+};
+
+Header.propTypes = {
+  loggedIn: PropTypes.bool.isRequired,
+  username: PropTypes.string.isRequired,
+  logout: PropTypes.func.isRequired,
 };
 
 export default Header;
