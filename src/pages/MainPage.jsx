@@ -107,7 +107,7 @@ const MainPage = () => {
   useEffect(() => {
     const fetchDestinations = async () => {
       try {
-        const response = await fetch('http://travel.schoolcode.dk/travel/destinations');
+        const response = await fetch('https://travel.schoolcode.dk/travel/destinations');
         if (response.ok) {
           const data = await response.json();
           console.log('Fetched destinations:', data); // Tjek API-data i konsollen
