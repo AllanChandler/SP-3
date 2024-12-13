@@ -55,7 +55,7 @@ const SubmitButton = styled.button`
 const BookingRegister = () => {
   const location = useLocation();
   const { selectedFlightData } = location.state || {}; // Get the selected flight data passed from DestinationsOverView
-  
+
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -70,6 +70,8 @@ const BookingRegister = () => {
     cardname: '',
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false); // Track form submission status
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -80,32 +82,66 @@ const BookingRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
-    // Create an object with only the necessary flight data and user information
-    const bookingData = {
-      destinationCity: selectedFlightData.arrivalCity,
-      departureDate: selectedFlightData.departureDate,
-      arrivalDate: selectedFlightData.returnDate,
-      bookingDate: new Date().toISOString(), // Set the current date as booking date
-    };
+    // Validate the form first
+    if (!selectedFlightData) {
+      alert('No flight data available!');
+      setIsSubmitting(false);
+      return;
+    }
 
-    // Your submit logic here (e.g., send data to the API)
-    console.log('Booking Data:', bookingData);
-    
-    // Assuming you are sending the data to an API:
-    // fetch('/your-api-endpoint', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(bookingData),
-    // })
-    //   .then(response => response.json())
-    //   .then(data => console.log(data))
-    //   .catch(error => console.error('Error:', error));
+    // Function to format date as YYYY-MM-DD
+  const formatDate = (date) => {
+    const d = new Date(date);
+    return d.toISOString().split('T')[0]; // Get the date part (YYYY-MM-DD)
   };
 
-  // Check if all required fields are filled out
+  // Function to format date as YYYY-MM-DDTHH:mm:ss
+  const formatDateWithTime = (date) => {
+    const d = new Date(date);
+    return d.toISOString().split('.')[0]; // Get the full ISO string without milliseconds
+  };
+
+    // Split the "destinationCity" into city and country
+    const [city] = selectedFlightData.arrivalCity.split(',').map(str => str.trim());
+
+    // Prepare the booking data, sending only the city
+    const bookingData = {
+      destinationCity: city,  // Send only the city to the API
+      departureDate: formatDateWithTime(selectedFlightData.departureDate),  
+    arrivalDate: formatDateWithTime(selectedFlightData.returnDate),
+      bookingDate: formatDate(new Date()),
+      status: 'PENDING'  // Add status as 'PENDING'
+    };
+
+    // Submit the booking data
+    try {
+      const response = await fetch('http://localhost:7070/travel/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bookingData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Booking successful:', data);
+        alert('Booking successfully submitted!');
+      } else {
+        const errorText = await response.text();
+        throw new Error(`Booking failed with status ${response.status}: ${errorText}`);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Booking failed. Please try again.');
+    }
+
+    setIsSubmitting(false);
+  };
+
+  // Check if all required fields are filled out and passwords match
   const isFormValid =
     formData.email &&
     formData.password1 &&
@@ -205,9 +241,9 @@ const BookingRegister = () => {
             value={formData.cardname}
             onChange={handleInputChange}
           />
-          
-          <SubmitButton type="submit" disabled={!isFormValid}>
-            Submit
+
+          <SubmitButton type="submit" disabled={!isFormValid || isSubmitting}>
+            {isSubmitting ? 'Submitting...' : 'Submit'}
           </SubmitButton>
         </Form>
       </Container>
@@ -217,5 +253,6 @@ const BookingRegister = () => {
 };
 
 export default BookingRegister;
+
 
 
