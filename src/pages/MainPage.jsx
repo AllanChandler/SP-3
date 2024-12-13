@@ -88,6 +88,11 @@ const Button = styled.button`
   &:active {
     background-color: #162234;
   }
+
+  &:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
 `;
 
 const MainPage = () => {
@@ -132,6 +137,10 @@ const MainPage = () => {
     navigate("/destinations", { state: formData }); // Send formData to Destinations page
   };
 
+  // Check if all required fields are filled out
+  const isFormValid = formData.departure && formData.destination && formData.departureDate &&
+    (formData.tripType === 'one-way' || formData.returnDate); // Return date is optional for one-way trips
+
   return (
     <MainWrapper>
       <Subtitle>De bedste rejseoplevelser – fra hvor som helst, til hvor som helst</Subtitle>
@@ -155,11 +164,13 @@ const MainPage = () => {
             onChange={handleInputChange}
           >
             <option value="">Vælg destination</option>
-            {destinations.map((destination) => (
-              <option key={destination.id} value={`${destination.city}, ${destination.country}`}>
-                {destination.city}, {destination.country}
-              </option>
-            ))}
+            {destinations
+              .filter((destination) => destination.city !== formData.departure.split(',')[0]) // Filter out the selected departure city
+              .map((destination) => (
+                <option key={destination.id} value={`${destination.city}, ${destination.country}`}>
+                  {destination.city}, {destination.country}
+                </option>
+              ))}
           </Select>
         </InputGroup>
         <InputGroup>
@@ -184,7 +195,7 @@ const MainPage = () => {
         >
           <option value="round-trip">Tur/retur</option>
         </Select>
-        <Button type="submit">Søg</Button>
+        <Button type="submit" disabled={!isFormValid}>Søg</Button>
       </SearchForm>
       <Footer isSticky={true} />
     </MainWrapper>
@@ -192,6 +203,8 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
+
 
 
 
