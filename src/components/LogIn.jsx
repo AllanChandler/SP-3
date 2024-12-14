@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
+import Footer from '../components/Footer'; // Ensure the correct import path
 
 // Styled Components
 const Box = styled.div`
   background-color: #efeded;
   padding: 30px;
   border-radius: 10px;
-  width: 50%;
-  margin: auto;
+  width: 40%; /* Reduced width */
+  margin: 50px auto; /* Added top margin for more space at the top */
 `;
 
 const LoginCenter = styled.div`
@@ -66,32 +67,35 @@ function LogIn({ login }) {
   };
 
   return (
-    <Box>
-      <LoginCenter>
-        <h1>Sign in</h1>
-      </LoginCenter>
-      <FormContainer>
-        <form className="generic-form" onSubmit={performLogin}>
-          <input
-            type="text"
-            id="username"
-            placeholder="Username"
-            onChange={onChange}
-            value={loginCredentials.username}
-            required
-          />
-          <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            onChange={onChange}
-            value={loginCredentials.password}
-            required
-          />
-          <Button type="submit">Login</Button>
-        </form>
-      </FormContainer>
-    </Box>
+    <>
+      <Box>
+        <LoginCenter>
+          <h1>Sign in</h1>
+        </LoginCenter>
+        <FormContainer>
+          <form className="generic-form" onSubmit={performLogin}>
+            <input
+              type="text"
+              id="username"
+              placeholder="Username"
+              onChange={onChange}
+              value={loginCredentials.username}
+              required
+            />
+            <input
+              type="password"
+              id="password"
+              placeholder="Password"
+              onChange={onChange}
+              value={loginCredentials.password}
+              required
+            />
+            <Button type="submit">Login</Button>
+          </form>
+        </FormContainer>
+      </Box>
+      <Footer isSticky={true} />
+    </>
   );
 }
 
