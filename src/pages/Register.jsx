@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
+import Footer from '../components/Footer'; // Ensure the correct path to Footer
 
-// Styled Components for consistency with the login page
+// Styled Components
 const Box = styled.div`
   background-color: #efeded;
   padding: 30px;
   border-radius: 10px;
-  width: 50%;
-  margin: auto;
+  width: 40%; /* Reduced width to match the Login component */
+  margin: 50px auto; /* Added top margin for more space at the top */
 `;
 
 const RegisterCenter = styled.div`
@@ -74,33 +75,36 @@ function Register({ registerUser }) {
   };
 
   return (
-    <Box>
-      <RegisterCenter>
-        <h1>Register</h1>
-      </RegisterCenter>
-      <FormContainer>
-        <form className="generic-form" onSubmit={performRegister}>
-          <input
-            type="text"
-            id="username"
-            placeholder="Username"
-            onChange={onChange}
-            value={registerCredentials.username}
-            required
-          />
-          <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            onChange={onChange}
-            value={registerCredentials.password}
-            required
-          />
-          {error && <div style={{ color: 'red' }}>{error}</div>}
-          <Button type="submit">Register</Button>
-        </form>
-      </FormContainer>
-    </Box>
+    <>
+      <Box>
+        <RegisterCenter>
+          <h1>Register</h1>
+        </RegisterCenter>
+        <FormContainer>
+          <form className="generic-form" onSubmit={performRegister}>
+            <input
+              type="text"
+              id="username"
+              placeholder="Username"
+              onChange={onChange}
+              value={registerCredentials.username}
+              required
+            />
+            <input
+              type="password"
+              id="password"
+              placeholder="Password"
+              onChange={onChange}
+              value={registerCredentials.password}
+              required
+            />
+            {error && <div style={{ color: 'red' }}>{error}</div>}
+            <Button type="submit">Register</Button>
+          </form>
+        </FormContainer>
+      </Box>
+      <Footer isSticky={true} />
+    </>
   );
 }
 
