@@ -5,6 +5,10 @@ function handleHttpErrors(res) {
     if (!res.ok) {
         return Promise.reject({ status: res.status, fullError: res.json() });
     }
+    // If the response is empty (e.g., 204 No Content), return an empty object
+    if (res.status === 204) {
+        return {};
+    }
     return res.json();
 }
 
@@ -51,7 +55,6 @@ function apiFacade() {
         const roles = getUserRoles().split(',');
         return loggedIn() && roles.some(role => role.trim() === neededRole);
     };
-    
 
     // Login the user and store the token
     const login = (user, password) => {
@@ -107,6 +110,54 @@ function apiFacade() {
             });
     };
 
+    // Delete a review by its ID
+    const deleteReview = (id) => {
+        const options = makeOptions('DELETE', true); 
+        const endpoint = `/reviews/${id}`;
+        return fetch(URL + endpoint, options)
+            .then(handleHttpErrors)
+            .catch((err) => {
+                console.error("Delete review error:", err);
+                throw err;
+            });
+    };
+
+    // Delete a booking by its ID
+    const deleteBooking = (id) => {
+        const options = makeOptions('DELETE', true); 
+        const endpoint = `/bookings/${id}`;
+        return fetch(URL + endpoint, options)
+            .then(handleHttpErrors)
+            .catch((err) => {
+                console.error("Delete booking error:", err);
+                throw err;
+            });
+    };
+
+    // Update a destination by its ID (PUT)
+const updateDestination = (id, updatedData) => {
+    const options = makeOptions('PUT', true, updatedData); 
+    const endpoint = `/destinations/${id}`;
+    return fetch(URL + endpoint, options)
+        .then(handleHttpErrors)
+        .catch((err) => {
+            console.error("Update destination error:", err);
+            throw err;
+        });
+};
+
+// Insert a new destination (POST)
+const addDestination = (newDestination) => {
+    const options = makeOptions('POST', true, newDestination); 
+    const endpoint = `/destinations`;
+    return fetch(URL + endpoint, options)
+        .then(handleHttpErrors)
+        .catch((err) => {
+            console.error("Add destination error:", err);
+            throw err;
+        });
+};
+
     // Helper function to generate request options for fetch
     const makeOptions = (method, addToken, body) => {
         const opts = {
@@ -136,7 +187,11 @@ function apiFacade() {
         logout,
         fetchData,
         deleteDestination,
-        hasUserAccess,
+        deleteReview,
+        deleteBooking,
+        updateDestination,
+        addDestination,
+        hasUserAccess
     };
 }
 
