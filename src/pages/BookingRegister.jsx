@@ -137,7 +137,6 @@ const BookingRegister = () => {
       // Register the user
       await facade.register(registrationData.username, registrationData.password);
 
-      console.log('User registered successfully.');
 
       // Submit the booking
       const bookingResponse = await fetch('https://travel.schoolcode.dk/travel/bookings', {
@@ -147,16 +146,22 @@ const BookingRegister = () => {
       });
 
       if (!bookingResponse.ok) {
-        const errorText = await bookingResponse.text();
-        throw new Error(`Booking failed: ${errorText}`);
+        throw new Error(`Booking failed: Please check the informations and try again`);
       }
 
       console.log('Booking successful.');
       alert('Registration and booking completed successfully!');
     } catch (error) {
       console.error('Error:', error);
-      alert('An error occurred. Please try again.');
+    if (error.status === 400) {
+      alert('The email you provided is already registered. Please log in or use a different email.');
+    }else{
+      alert(`Booking failed: Please check the informations and try again`);
+
+  
+    
     }
+  }
 
     setIsSubmitting(false);
   };
