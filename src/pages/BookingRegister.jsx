@@ -140,7 +140,7 @@ const BookingRegister = () => {
       console.log('User registered successfully.');
 
       // Submit the booking
-      const bookingResponse = await fetch('http://localhost:7070/travel/bookings', {
+      const bookingResponse = await fetch('http://travel.schoolcode/travel/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bookingData),
