@@ -158,6 +158,19 @@ const addDestination = (newDestination) => {
         });
 };
 
+// Insert a new review (POST)
+const addReview = (newReview) => {
+    const options = makeOptions('POST', true, newReview); 
+    const endpoint = `/reviews`; 
+    return fetch(URL + endpoint, options)
+        .then(handleHttpErrors)
+        .catch((err) => {
+            console.error("Add review error:", err);
+            throw err;
+        });
+};
+
+
     // Helper function to generate request options for fetch
     const makeOptions = (method, addToken, body) => {
         const opts = {
@@ -191,6 +204,7 @@ const addDestination = (newDestination) => {
         deleteBooking,
         updateDestination,
         addDestination,
+        addReview,
         hasUserAccess
     };
 }
