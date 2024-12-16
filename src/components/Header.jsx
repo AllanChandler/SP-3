@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Logo from '../assets/logo.png'; 
+import Logo from '../assets/logo.png';
+import facade from '../util/apiFacade'; // Import the facade
 
 const HeaderWrapper = styled.header`
   background-color: #041635;
@@ -28,7 +29,7 @@ const Nav = styled.nav`
     color: white;
     text-decoration: none;
     margin: 0 20px;
-    
+
     &:hover {
       text-decoration: underline;
     }
@@ -63,6 +64,9 @@ const WelcomeSection = styled.div`
 `;
 
 const Header = ({ loggedIn, username, logout }) => {
+  // Check if the user has the 'admin' role
+  const isAdmin = facade.hasUserAccess('admin');
+
   return (
     <HeaderWrapper>
       <LogoContainer>
@@ -71,10 +75,18 @@ const Header = ({ loggedIn, username, logout }) => {
       <Nav>
         <Link to="/">Home</Link> |
         <Link to="/vision">Vision</Link> |
-        <Link to="/endpoints">Endpoints</Link> |
         <Link to="/login">Login</Link> |
-        <Link to="/register">Register</Link> | 
-        <Link to="/admin">Administration</Link> |
+        <Link to="/register">Register</Link> |
+        {isAdmin && (
+          <>
+            <Link to="/admin">Administration</Link> |
+          </>
+        )}
+        {loggedIn && (
+          <>
+            <Link to="/reviews">Reviews</Link> |
+          </>
+        )}
         <Link to="/country-info">Country Info</Link>
       </Nav>
 
@@ -88,6 +100,7 @@ const Header = ({ loggedIn, username, logout }) => {
   );
 };
 
+// Add PropTypes validation for 'loggedIn' prop
 Header.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,

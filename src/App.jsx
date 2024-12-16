@@ -4,7 +4,7 @@ import GlobalStyle from './styles/GlobalStyle';
 import Header from './components/Header';
 import MainPage from './pages/MainPage';
 import VisionPage from './pages/VisionPage';
-import EndpointsPage from './pages/EndpointsPage';
+import ReviewPage from './pages/ReviewPage';
 import Login from './components/LogIn';
 import Register from './pages/Register';
 import TravelAdministration from './pages/TravelAdministration';
@@ -65,9 +65,9 @@ const App = () => {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/vision" element={<VisionPage />} />
-        <Route path="/endpoints" element={<EndpointsPage />} />
         <Route path="/login" element={<Login login={login} />} />
         <Route path="/register" element={<Register registerUser={registerUser} />} />
+        <Route path="/reviews" element={<ReviewPage />} />
         <Route path="/admin" element={<TravelAdministration />} />
         <Route path="/country-info" element={<CountryInfoPage />} />
         <Route path="/destinations" element={<DestinationsOverView />} />
