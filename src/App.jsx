@@ -4,7 +4,6 @@ import GlobalStyle from './styles/GlobalStyle';
 import Header from './components/Header';
 import MainPage from './pages/MainPage';
 import VisionPage from './pages/VisionPage';
-import EndpointsPage from './pages/EndpointsPage';
 import Login from './components/LogIn';
 import Register from './pages/Register';
 import TravelAdministration from './pages/TravelAdministration';
