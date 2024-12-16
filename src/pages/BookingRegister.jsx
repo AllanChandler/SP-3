@@ -2,10 +2,10 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Footer from '../components/Footer';
-import PropTypes from 'prop-types'; // Import PropTypes
+import facade from '../util/apiFacade';
 
 
-// Styling with styled-components
+// Styled Components
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -52,11 +52,15 @@ const SubmitButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
+
+  &:disabled {
+    background-color: #aaa;
+  }
 `;
 
 const BookingRegister = () => {
   const location = useLocation();
-  const { selectedFlightData } = location.state || {}; // Get the selected flight data passed from DestinationsOverView
+  const { selectedFlightData } = location.state || {}; // Get flight data
 
   const [formData, setFormData] = useState({
     firstname: '',
@@ -72,7 +76,7 @@ const BookingRegister = () => {
     cardname: '',
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false); // Track form submission status
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -86,12 +90,24 @@ const BookingRegister = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Validate the form first
+    // Validate the form
     if (!selectedFlightData) {
       alert('No flight data available!');
       setIsSubmitting(false);
       return;
     }
+
+    if (formData.password1 !== formData.password2) {
+      alert('Passwords do not match!');
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Registration data
+    const registrationData = {
+      username: formData.email,
+      password: formData.password1,
+    };
 
     // Function to format date as YYYY-MM-DD
   const formatDate = (date) => {
@@ -108,7 +124,7 @@ const BookingRegister = () => {
     // Split the "destinationCity" into city and country
     const [city] = selectedFlightData.arrivalCity.split(',').map(str => str.trim());
 
-    // Prepare the booking data, sending only the city
+    // Booking data
     const bookingData = {
       destinationCity: city,  // Send only the city to the API
       departureDate: formatDateWithTime(selectedFlightData.departureDate),  
@@ -117,27 +133,29 @@ const BookingRegister = () => {
       status: 'PENDING'  // Add status as 'PENDING'
     };
 
-    // Submit the booking data
     try {
-      const response = await fetch('http://localhost:7070/travel/bookings', {
+      // Register the user
+      await facade.register(registrationData.username, registrationData.password);
+
+      console.log('User registered successfully.');
+
+      // Submit the booking
+      const bookingResponse = await fetch('http://localhost:7070/travel/bookings', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(bookingData),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Booking successful:', data);
-        alert('Booking successfully submitted!');
-      } else {
-        const errorText = await response.text();
-        throw new Error(`Booking failed with status ${response.status}: ${errorText}`);
+      if (!bookingResponse.ok) {
+        const errorText = await bookingResponse.text();
+        throw new Error(`Booking failed: ${errorText}`);
       }
+
+      console.log('Booking successful.');
+      alert('Registration and booking completed successfully!');
     } catch (error) {
       console.error('Error:', error);
-      alert('Booking failed. Please try again.');
+      alert('An error occurred. Please try again.');
     }
 
     setIsSubmitting(false);
@@ -145,52 +163,23 @@ const BookingRegister = () => {
 
   // Check if all required fields are filled out and passwords match
   const isFormValid =
+    formData.firstname &&
+    formData.lastname &&
+    formData.phonenumber &&
+    formData.nationality &&
     formData.email &&
     formData.password1 &&
     formData.password2 &&
     formData.password1 === formData.password2 &&
-    formData.firstname &&
-    formData.lastname &&
-    formData.phonenumber &&
-    formData.nationality;
-
-
-    // Register component to register a new user
-function Register({ registerUser }) {
-  const init = { username: '', password: '' };
-  const [registerCredentials, setRegisterCredentials] = useState(init);
-  const [setError] = useState('');
-
-  const performRegister = (evt) => {
-    evt.preventDefault();
-    registerUser(registerCredentials.username, registerCredentials.password)
-      .then(() => {
-        setError('');
-        alert('User registered successfully!');
-      })
-      .catch((err) => {
-        setError('Error registering user: ' + err.message);
-      });
-  };
-
-  const onChange = (evt) => {
-    setRegisterCredentials({ ...registerCredentials, [evt.target.id]: evt.target.value });
-  };
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();  // Forhindrer standard formularindsendelse
-    
-    // Kald begge funktioner
-    await handleSubmit(e);  // Håndter booking submission
-    performRegister(e);     // Håndter brugerregistrering
-  };
-  
+    formData.cardnumber &&
+    formData.expiration &&
+    formData.cvv &&
+    formData.cardname;
 
   return (
     <PageWrapper>
       <Container>
-        <Form method="post" onSubmit={handleFormSubmit}>
-
+        <Form method="post" onSubmit={handleSubmit}>
           <h2>Personlige oplysninger</h2>
           <FlexGroup>
             <Input
@@ -228,18 +217,16 @@ function Register({ registerUser }) {
             type="email"
             name="email"
             placeholder="Email"
-            value={registerCredentials.username}
-            onChange={onChange}
-            required
+            value={formData.email}
+            onChange={handleInputChange}
           />
           <FlexGroup>
             <Input
               type="password"
               name="password1"
               placeholder="Kodeord"
-              value={registerCredentials.password}
-              onChange={onChange}
-              required
+              value={formData.password1}
+              onChange={handleInputChange}
             />
             <Input
               type="password"
@@ -278,7 +265,6 @@ function Register({ registerUser }) {
             value={formData.cardname}
             onChange={handleInputChange}
           />
-
           <SubmitButton type="submit" disabled={!isFormValid || isSubmitting}>
             {isSubmitting ? 'Submitting...' : 'Submit'}
           </SubmitButton>
@@ -287,14 +273,7 @@ function Register({ registerUser }) {
       <Footer isSticky={false} />
     </PageWrapper>
   );
- }
-// Add PropTypes validation for the register function prop
-Register.propTypes = {
-  registerUser: PropTypes.func.isRequired,
 };
-}
-
 
 export default BookingRegister;
-
 
