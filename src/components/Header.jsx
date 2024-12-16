@@ -71,9 +71,8 @@ const Header = ({ loggedIn, username, logout }) => {
       <Nav>
         <Link to="/">Home</Link> |
         <Link to="/vision">Vision</Link> |
-        <Link to="/login">Login</Link> |
-        <Link to="/register">Register</Link> | 
-        <Link to="/admin">Administration</Link> |
+        {!username && <><Link to="/login">Login</Link> |</>}
+        {username === "admin" && <><Link to="/admin">Administration</Link> |</>}
         <Link to="/country-info">Country Info</Link>
       </Nav>
 

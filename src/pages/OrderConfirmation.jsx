@@ -2,27 +2,25 @@ import { useLocation } from 'react-router-dom';
 
 const OrderConfirmation = () => {
   const location = useLocation();
-  const { selectedFlight } = location.state || {};
+  const { selectedFlight } = location.state || {}; // For at undgå fejl, hvis der ikke er state
 
   return (
     <div>
-      <h1>Order Confirmation</h1>
-      {selectedFlight ? (
+      <h1>Bestilling bekræftet</h1>
+      <p>Tak for din bestilling! Vi er glade for at bekræfte, at din bestilling er blevet gennemført.</p>
+      <p>Vi ønsker dig en god rejse!</p>
+
+      {selectedFlight && (
         <div>
-          <p>Du har valgt følgende fly:</p>
-          <p>Udgående flyrejse: {selectedFlight.departureCity} - {selectedFlight.arrivalCity}</p>
-          <p>Indgående flyrejse: {selectedFlight.returnFlight.departureCity} - {selectedFlight.returnFlight.arrivalCity}</p>
-          <p>Pris: {selectedFlight.price}</p>
+          <h2>Flyinformation</h2>
+          <p><strong>Udgående flyrejse:</strong> {selectedFlight.departureCity} → {selectedFlight.arrivalCity}</p>
+          <p><strong>Indgående flyrejse:</strong> {selectedFlight.returnFlight.departureCity} → {selectedFlight.returnFlight.arrivalCity}</p>
+          <p><strong>Pris:</strong> {selectedFlight.price}</p>
         </div>
-      ) : (
-        <p>Ingen valg er blevet bekræftet.</p>
       )}
     </div>
   );
 };
 
 export default OrderConfirmation;
-
-
-
 

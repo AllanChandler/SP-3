@@ -5,13 +5,11 @@ import Header from './components/Header';
 import MainPage from './pages/MainPage';
 import VisionPage from './pages/VisionPage';
 import Login from './components/LogIn';
-import Register from './pages/Register';
 import TravelAdministration from './pages/TravelAdministration';
 import CountryInfoPage from './pages/CountryInfoPage';
 import DestinationsOverView from './pages/DestinationsOverView';
 import BookingRegister from './pages/BookingRegister';
 import OrderConfirmation from './pages/OrderConfirmation';
-import Review from './pages/Review';
 import apiFacade from './util/apiFacade';
 
 const App = () => {
@@ -65,13 +63,11 @@ const App = () => {
         <Route path="/" element={<MainPage />} />
         <Route path="/vision" element={<VisionPage />} />
         <Route path="/login" element={<Login login={login} />} />
-        <Route path="/register" element={<Register registerUser={registerUser} />} />
         <Route path="/admin" element={<TravelAdministration />} />
         <Route path="/country-info" element={<CountryInfoPage />} />
         <Route path="/destinations" element={<DestinationsOverView />} />
-        <Route path="/booking" element={<BookingRegister />} />
+        <Route path="/booking" element={<BookingRegister registerUser={registerUser} />} />
         <Route path="/confirmation" element={<OrderConfirmation />} />
-        <Route path="/review" element={<Review />} />
         
       </Routes>
     </>

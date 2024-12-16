@@ -106,8 +106,13 @@ const MainPage = () => {
   });
 
   const [destinations, setDestinations] = useState([]);
+  const [todayDate, setTodayDate] = useState(''); // To store today's date for minDate
 
   useEffect(() => {
+    // Set today's date in the format YYYY-MM-DD
+    const today = new Date().toISOString().split('T')[0];
+    setTodayDate(today);
+
     const fetchDestinations = async () => {
       try {
         const response = await fetch('https://travel.schoolcode.dk/travel/destinations');
@@ -179,12 +184,14 @@ const MainPage = () => {
             name="departureDate"
             value={formData.departureDate}
             onChange={handleInputChange}
+            min={todayDate} // Ensure departure date cannot be in the past
           />
           <Input
             type="date"
             name="returnDate"
             value={formData.returnDate}
             onChange={handleInputChange}
+            min={formData.departureDate || todayDate} // Ensure return date is not before departure date or today's date
             disabled={formData.tripType !== 'round-trip'}
           />
         </InputGroup>
