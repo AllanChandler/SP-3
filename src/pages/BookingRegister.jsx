@@ -53,18 +53,14 @@ const SubmitButton = styled.button`
   cursor: pointer;
   width: 100%;
 
-
   &:disabled {
     background-color: #aaa;
   }
-
 `;
 
 const BookingRegister = () => {
   const location = useLocation();
-
   const { selectedFlightData } = location.state || {}; // Get flight data
-
 
   const [formData, setFormData] = useState({
     firstname: '',
@@ -80,9 +76,7 @@ const BookingRegister = () => {
     cardname: '',
   });
 
-
   const [isSubmitting, setIsSubmitting] = useState(false);
-
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -96,8 +90,7 @@ const BookingRegister = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Validate the form first
-
+    // Validate the form
     if (!selectedFlightData) {
       alert('No flight data available!');
       setIsSubmitting(false);
@@ -116,7 +109,6 @@ const BookingRegister = () => {
       password: formData.password1,
     };
 
-
     // Function to format date as YYYY-MM-DD
   const formatDate = (date) => {
     const d = new Date(date);
@@ -127,7 +119,6 @@ const BookingRegister = () => {
   const formatDateWithTime = (date) => {
     const d = new Date(date);
     return d.toISOString().split('.')[0]; // Get the full ISO string without milliseconds
-
   };
 
     // Split the "destinationCity" into city and country
@@ -176,65 +167,14 @@ const BookingRegister = () => {
     formData.lastname &&
     formData.phonenumber &&
     formData.nationality &&
-
-  };
-
-    // Split the "destinationCity" into city and country
-    const [city] = selectedFlightData.arrivalCity.split(',').map(str => str.trim());
-
-    // Prepare the booking data, sending only the city
-    const bookingData = {
-      destinationCity: city,  // Send only the city to the API
-      departureDate: formatDateWithTime(selectedFlightData.departureDate),  
-    arrivalDate: formatDateWithTime(selectedFlightData.returnDate),
-      bookingDate: formatDate(new Date()),
-      status: 'PENDING'  // Add status as 'PENDING'
-    };
-
-    // Submit the booking data
-    try {
-      const response = await fetch('http://localhost:7070/travel/bookings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bookingData),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Booking successful:', data);
-        alert('Booking successfully submitted!');
-      } else {
-        const errorText = await response.text();
-        throw new Error(`Booking failed with status ${response.status}: ${errorText}`);
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Booking failed. Please try again.');
-    }
-
-    setIsSubmitting(false);
-  };
-
-  // Check if all required fields are filled out and passwords match
-  const isFormValid =
-
     formData.email &&
     formData.password1 &&
     formData.password2 &&
     formData.password1 === formData.password2 &&
-
     formData.cardnumber &&
     formData.expiration &&
     formData.cvv &&
     formData.cardname;
-
-    formData.firstname &&
-    formData.lastname &&
-    formData.phonenumber &&
-    formData.nationality;
-
 
   return (
     <PageWrapper>
@@ -325,7 +265,6 @@ const BookingRegister = () => {
             value={formData.cardname}
             onChange={handleInputChange}
           />
-
           <SubmitButton type="submit" disabled={!isFormValid || isSubmitting}>
             {isSubmitting ? 'Submitting...' : 'Submit'}
           </SubmitButton>
