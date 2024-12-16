@@ -1,4 +1,4 @@
-import { useLocation, useNavigate} from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Footer from "../components/Footer";
@@ -104,13 +104,10 @@ const Button = styled.button`
   }
 `;
 
-const DestinationsOverView = (props) => {
-
-  // eslint-disable-next-line react/prop-types
-  const username = props.username;
+const DestinationsOverView = () => {
   const location = useLocation();
   const formData = location.state; // Hent formData direkte fra state
-  const navigate = useNavigate(); // useNavigate hook for navigation
+  const navigate = useNavigate(); // useNavigate hook for navigation 
 
   const [selectedFlight, setSelectedFlight] = useState(null);
 
@@ -157,7 +154,18 @@ const DestinationsOverView = (props) => {
     setSelectedFlight(flight);
   };
 
- 
+  // Funktion til at bekræfte valget og navigere til OrderConfirmation
+  const handleConfirm = () => {
+    const selectedFlightData = {
+      ...selectedFlight,
+      departureCity: formData.departure,
+      arrivalCity: formData.destination,
+      departureDate: formData.departureDate,
+      returnDate: formData.returnDate || null,
+      bookingDate: new Date().toISOString(), // Set the current date as booking date
+    };
+    navigate('/booking', { state: { selectedFlightData } });
+  };
   
 
   return (
@@ -225,13 +233,7 @@ const DestinationsOverView = (props) => {
           <FlightPrice>
             <p>Pris: {selectedFlight.price}</p>
           </FlightPrice>
-          <Button 
-            // onClick={handleConfirm}
-            >
-              {username ? <p onClick={() => navigate("/confirmation")}>Bekræft valg</p> 
-              : <p onClick={() => navigate("/booking")}>Registrer profil</p>
-              }
-          </Button>
+          <Button onClick={handleConfirm}>Bekræft valg</Button>
         </ConfirmBox>
       )}
       <Footer isSticky={false} />
@@ -240,8 +242,6 @@ const DestinationsOverView = (props) => {
 };
 
 export default DestinationsOverView;
-
-
 
 
 
