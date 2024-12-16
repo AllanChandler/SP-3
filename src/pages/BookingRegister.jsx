@@ -2,8 +2,10 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Footer from '../components/Footer';
+import facade from '../util/apiFacade';
 
-// Styling with styled-components
+
+// Styled Components
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -50,11 +52,19 @@ const SubmitButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
   width: 100%;
+
+
+  &:disabled {
+    background-color: #aaa;
+  }
+
 `;
 
 const BookingRegister = () => {
   const location = useLocation();
-  const { selectedFlightData } = location.state || {}; // Get the selected flight data passed from DestinationsOverView
+
+  const { selectedFlightData } = location.state || {}; // Get flight data
+
 
   const [formData, setFormData] = useState({
     firstname: '',
@@ -70,7 +80,9 @@ const BookingRegister = () => {
     cardname: '',
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false); // Track form submission status
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -85,11 +97,25 @@ const BookingRegister = () => {
     setIsSubmitting(true);
 
     // Validate the form first
+
     if (!selectedFlightData) {
       alert('No flight data available!');
       setIsSubmitting(false);
       return;
     }
+
+    if (formData.password1 !== formData.password2) {
+      alert('Passwords do not match!');
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Registration data
+    const registrationData = {
+      username: formData.email,
+      password: formData.password1,
+    };
+
 
     // Function to format date as YYYY-MM-DD
   const formatDate = (date) => {
@@ -101,6 +127,56 @@ const BookingRegister = () => {
   const formatDateWithTime = (date) => {
     const d = new Date(date);
     return d.toISOString().split('.')[0]; // Get the full ISO string without milliseconds
+
+  };
+
+    // Split the "destinationCity" into city and country
+    const [city] = selectedFlightData.arrivalCity.split(',').map(str => str.trim());
+
+    // Booking data
+    const bookingData = {
+      destinationCity: city,  // Send only the city to the API
+      departureDate: formatDateWithTime(selectedFlightData.departureDate),  
+    arrivalDate: formatDateWithTime(selectedFlightData.returnDate),
+      bookingDate: formatDate(new Date()),
+      status: 'PENDING'  // Add status as 'PENDING'
+    };
+
+    try {
+      // Register the user
+      await facade.register(registrationData.username, registrationData.password);
+
+      console.log('User registered successfully.');
+
+      // Submit the booking
+      const bookingResponse = await fetch('http://localhost:7070/travel/bookings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bookingData),
+      });
+
+      if (!bookingResponse.ok) {
+        const errorText = await bookingResponse.text();
+        throw new Error(`Booking failed: ${errorText}`);
+      }
+
+      console.log('Booking successful.');
+      alert('Registration and booking completed successfully!');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again.');
+    }
+
+    setIsSubmitting(false);
+  };
+
+  // Check if all required fields are filled out and passwords match
+  const isFormValid =
+    formData.firstname &&
+    formData.lastname &&
+    formData.phonenumber &&
+    formData.nationality &&
+
   };
 
     // Split the "destinationCity" into city and country
@@ -143,14 +219,22 @@ const BookingRegister = () => {
 
   // Check if all required fields are filled out and passwords match
   const isFormValid =
+
     formData.email &&
     formData.password1 &&
     formData.password2 &&
     formData.password1 === formData.password2 &&
+
+    formData.cardnumber &&
+    formData.expiration &&
+    formData.cvv &&
+    formData.cardname;
+
     formData.firstname &&
     formData.lastname &&
     formData.phonenumber &&
     formData.nationality;
+
 
   return (
     <PageWrapper>
@@ -253,6 +337,8 @@ const BookingRegister = () => {
 };
 
 export default BookingRegister;
+
+
 
 
 

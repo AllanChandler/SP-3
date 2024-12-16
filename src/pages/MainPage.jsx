@@ -110,7 +110,7 @@ const MainPage = () => {
   useEffect(() => {
     const fetchDestinations = async () => {
       try {
-        const response = await fetch('https://travel.schoolcode.dk/travel/destinations');
+        const response = await fetch('http://localhost:7070/travel/destinations');
         if (response.ok) {
           const data = await response.json();
           setDestinations(data);
@@ -203,6 +203,7 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
 
 
 

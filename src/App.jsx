@@ -74,6 +74,7 @@ const App = () => {
         <Route path="/booking" element={<BookingRegister />} />
         <Route path="/confirmation" element={<OrderConfirmation />} />
         <Route path="/review" element={<Review />} />
+        
       </Routes>
     </>
   );
