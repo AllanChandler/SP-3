@@ -58,8 +58,8 @@ const SubmitButton = styled.button`
 `;
 
 const BookingRegister = () => {
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
   const { selectedFlightData } = location.state || {}; // Get flight data
 
   const [formData, setFormData] = useState({
@@ -110,27 +110,27 @@ const BookingRegister = () => {
     };
 
     // Function to format date as YYYY-MM-DD
-    const formatDate = (date) => {
-      const d = new Date(date);
-      return d.toISOString().split('T')[0];
-    };
+  const formatDate = (date) => {
+    const d = new Date(date);
+    return d.toISOString().split('T')[0]; // Get the date part (YYYY-MM-DD)
+  };
 
-    // Function to format date as YYYY-MM-DDTHH:mm:ss
-    const formatDateWithTime = (date) => {
-      const d = new Date(date);
-      return d.toISOString().split('.')[0];
-    };
+  // Function to format date as YYYY-MM-DDTHH:mm:ss
+  const formatDateWithTime = (date) => {
+    const d = new Date(date);
+    return d.toISOString().split('.')[0]; // Get the full ISO string without milliseconds
+  };
 
     // Split the "destinationCity" into city and country
-    const [city] = selectedFlightData.arrivalCity.split(',').map((str) => str.trim());
+    const [city] = selectedFlightData.arrivalCity.split(',').map(str => str.trim());
 
     // Booking data
     const bookingData = {
-      destinationCity: city, // Send only the city to the API
-      departureDate: formatDateWithTime(selectedFlightData.departureDate),
+      destinationCity: city,  // Send only the city to the API
+      departureDate: formatDateWithTime(selectedFlightData.departureDate),  
       arrivalDate: formatDateWithTime(selectedFlightData.returnDate),
       bookingDate: formatDate(new Date()),
-      status: 'PENDING', // Add status as 'PENDING'
+      status: 'PENDING'  // Add status as 'PENDING'
     };
 
     try {
@@ -145,24 +145,25 @@ const BookingRegister = () => {
       });
 
       if (!bookingResponse.ok) {
-        throw new Error('Booking failed: Please check the informations and try again');
+        throw new Error(`Booking failed: Please check the informations and try again`);
       }
 
       console.log('Booking successful.');
       alert('Registration and booking completed successfully!');
-
-      // Navigate to the confirmation page after successful booking
       navigate('/confirmation');
     } catch (error) {
       console.error('Error:', error);
-      if (error.status === 400) {
-        alert('The email you provided is already registered. Please log in or use a different email.');
-      } else {
-        alert('Booking failed: Please check the informations and try again.');
-      }
-    } finally {
-      setIsSubmitting(false);
+    if (error.status === 400) {
+      alert('The email you provided is already registered. Please log in or use a different email.');
+    }else{
+      alert(`Booking failed: Please check the informations and try again`);
+
+  
+    
     }
+  }
+
+    setIsSubmitting(false);
   };
 
   // Check if all required fields are filled out and passwords match
@@ -270,7 +271,7 @@ const BookingRegister = () => {
             onChange={handleInputChange}
           />
           <SubmitButton type="submit" disabled={!isFormValid || isSubmitting}>
-            Submit
+            {isSubmitting ? 'Submitting...' : 'Submit'}
           </SubmitButton>
         </Form>
       </Container>
