@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Footer from "../components/Footer";
@@ -104,7 +104,10 @@ const Button = styled.button`
   }
 `;
 
-const DestinationsOverView = () => {
+const DestinationsOverView = (props) => {
+
+  // eslint-disable-next-line react/prop-types
+  const username = props.username;
   const location = useLocation();
   const formData = location.state; // Hent formData direkte fra state
   const navigate = useNavigate(); // useNavigate hook for navigation
@@ -154,18 +157,7 @@ const DestinationsOverView = () => {
     setSelectedFlight(flight);
   };
 
-  // Funktion til at bekræfte valget og navigere til OrderConfirmation
-  const handleConfirm = () => {
-    const selectedFlightData = {
-      ...selectedFlight,
-      departureCity: formData.departure,
-      arrivalCity: formData.destination,
-      departureDate: formData.departureDate,
-      returnDate: formData.returnDate || null,
-      bookingDate: new Date().toISOString(), // Set the current date as booking date
-    };
-    navigate('/booking', { state: { selectedFlightData } });
-  };
+ 
   
 
   return (
@@ -233,7 +225,13 @@ const DestinationsOverView = () => {
           <FlightPrice>
             <p>Pris: {selectedFlight.price}</p>
           </FlightPrice>
-          <Button onClick={handleConfirm}>Bekræft valg</Button>
+          <Button 
+            // onClick={handleConfirm}
+            >
+              {username ? <p onClick={() => navigate("/confirmation")}>Bekræft valg</p> 
+              : <p onClick={() => navigate("/booking")}>Registrer profil</p>
+              }
+          </Button>
         </ConfirmBox>
       )}
       <Footer isSticky={false} />

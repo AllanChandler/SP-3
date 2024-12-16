@@ -1,9 +1,8 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Footer from '../components/Footer';
 import facade from '../util/apiFacade';
-
 
 // Styled Components
 const PageWrapper = styled.div`
@@ -59,6 +58,10 @@ const SubmitButton = styled.button`
 `;
 
 const BookingRegister = () => {
+
+
+  const navigate = useNavigate();
+
   const location = useLocation();
   const { selectedFlightData } = location.state || {}; // Get flight data
 
@@ -270,8 +273,12 @@ const BookingRegister = () => {
             value={formData.cardname}
             onChange={handleInputChange}
           />
-          <SubmitButton type="submit" disabled={!isFormValid || isSubmitting}>
-            {isSubmitting ? 'Submitting...' : 'Submit'}
+          <SubmitButton 
+            type="submit" 
+            disabled={!isFormValid || isSubmitting}
+            onClick={() => navigate("/confirmation")}
+          >
+            Submit
           </SubmitButton>
         </Form>
       </Container>

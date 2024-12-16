@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from '../assets/logo.png';
-import facade from '../util/apiFacade'; // Import the facade
+import facade from '../util/apiFacade'; 
 
 const HeaderWrapper = styled.header`
   background-color: #041635;
@@ -64,7 +64,7 @@ const WelcomeSection = styled.div`
 `;
 
 const Header = ({ loggedIn, username, logout }) => {
-  // Check if the user has the 'admin' role
+
   const isAdmin = facade.hasUserAccess('admin');
 
   return (
@@ -75,8 +75,7 @@ const Header = ({ loggedIn, username, logout }) => {
       <Nav>
         <Link to="/">Home</Link> |
         <Link to="/vision">Vision</Link> |
-        <Link to="/login">Login</Link> |
-        <Link to="/register">Register</Link> |
+        {!username && <><Link to="/login">Login</Link> |</>}
         {isAdmin && (
           <>
             <Link to="/admin">Administration</Link> |
