@@ -11,7 +11,7 @@ const Subtitle = styled.h2`
   text-align: center;
 `;
 
-const MainPage = () => {
+const Main = () => {
 
   return (
     <>
@@ -22,7 +22,7 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default Main;
 
 
 
