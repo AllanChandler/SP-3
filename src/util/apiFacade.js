@@ -14,6 +14,7 @@ function handleHttpErrors(res) {
 
 // API facade function
 function apiFacade() {
+    
     // Save the token in localStorage
     const setToken = (token) => {
         localStorage.setItem('jwtToken', token);
@@ -135,40 +136,40 @@ function apiFacade() {
     };
 
     // Update a destination by its ID (PUT)
-const updateDestination = (id, updatedData) => {
-    const options = makeOptions('PUT', true, updatedData); 
-    const endpoint = `/destinations/${id}`;
-    return fetch(URL + endpoint, options)
-        .then(handleHttpErrors)
-        .catch((err) => {
-            console.error("Update destination error:", err);
-            throw err;
-        });
-};
+    const updateDestination = (id, updatedData) => {
+        const options = makeOptions('PUT', true, updatedData); 
+        const endpoint = `/destinations/${id}`;
+        return fetch(URL + endpoint, options)
+            .then(handleHttpErrors)
+            .catch((err) => {
+                console.error("Update destination error:", err);
+                throw err;
+            });
+    };
 
-// Insert a new destination (POST)
-const addDestination = (newDestination) => {
-    const options = makeOptions('POST', true, newDestination); 
-    const endpoint = `/destinations`;
-    return fetch(URL + endpoint, options)
-        .then(handleHttpErrors)
-        .catch((err) => {
-            console.error("Add destination error:", err);
-            throw err;
-        });
-};
+    // Insert a new destination (POST)
+    const addDestination = (newDestination) => {
+        const options = makeOptions('POST', true, newDestination); 
+        const endpoint = `/destinations`;
+        return fetch(URL + endpoint, options)
+            .then(handleHttpErrors)
+            .catch((err) => {
+                console.error("Add destination error:", err);
+                throw err;
+            });
+    };
 
-// Insert a new review (POST)
-const addReview = (newReview) => {
-    const options = makeOptions('POST', true, newReview); 
-    const endpoint = `/reviews`; 
-    return fetch(URL + endpoint, options)
-        .then(handleHttpErrors)
-        .catch((err) => {
-            console.error("Add review error:", err);
-            throw err;
-        });
-};
+    // Insert a new review (POST)
+    const addReview = (newReview) => {
+        const options = makeOptions('POST', true, newReview); 
+        const endpoint = `/reviews`; 
+        return fetch(URL + endpoint, options)
+            .then(handleHttpErrors)
+            .catch((err) => {
+                console.error("Add review error:", err);
+                throw err;
+            });
+    };
 
 
     // Helper function to generate request options for fetch
@@ -207,6 +208,7 @@ const addReview = (newReview) => {
         addReview,
         hasUserAccess
     };
+
 }
 
 // Export the facade object for use in other parts of the application
