@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import GlobalStyle from './styles/GlobalStyle';
 import Header from './components/Header';
-import MainPage from './pages/MainPage';
+import MainPage from './pages/Main';
 import VisionPage from './pages/Vision';
 import ReviewPage from './pages/Review';
 import Login from './components/LogIn';
