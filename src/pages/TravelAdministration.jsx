@@ -141,8 +141,8 @@ const TravelAdministration = () => {
     const fetchBookings = async () => {
       try {
         const data = await facade.fetchData('/bookings');
-        console.log(data);
         setBookings(data);
+        console.log(data);
       } catch (error) {
         console.error('Error fetching bookings:', error);
       }
