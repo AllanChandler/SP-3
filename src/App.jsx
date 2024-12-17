@@ -18,7 +18,6 @@ const App = () => {
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
 
-  // Check login status when app mounts (localStorage-based login persistence)
   useEffect(() => {
     const savedLoginStatus = localStorage.getItem('loggedIn') === 'true';
     const savedUsername = localStorage.getItem('username') || '';
@@ -29,31 +28,28 @@ const App = () => {
     }
   }, []);
 
-  // Handle login
   const login = (username, password) => {
     apiFacade.login(username, password).then(() => {
       setLoggedIn(true);
       setUsername(username);
       localStorage.setItem('loggedIn', 'true');
       localStorage.setItem('username', username);
-      navigate('/'); // Navigate after successful login
+      navigate('/'); 
     }).catch(() => {
       alert('Login failed');
     });
   };
 
-  // Handle register
   const registerUser = (username, password) => {
-    return apiFacade.register(username, password); // Use register function from apiFacade
+    return apiFacade.register(username, password); 
   };
 
-  // Handle logout
   const logout = () => {
     apiFacade.logout();
     setLoggedIn(false);
     setUsername('');
     localStorage.clear();
-    navigate('/'); // Navigate to home or login page
+    navigate('/'); 
   };
 
   return (

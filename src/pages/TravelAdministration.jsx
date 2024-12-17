@@ -220,30 +220,24 @@ const TravelAdministration = () => {
   };
 
   const formatDate = (dateString, isBookingDate = false) => {
-    // Create the date object with adjusted month (subtracting 1 for 0-indexed month)
     const date = new Date(dateString[0], dateString[1] - 1, dateString[2], dateString[3] || 0, dateString[4] || 0, dateString[5] || 0);
     
-    // Check if the date is valid
     if (isNaN(date)) {
       return 'Invalid Date'; 
     }
   
-    // Format the year, month, and day
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
   
-    // If it's a booking date, return only the "YYYY-MM-DD" format
     if (isBookingDate) {
       return `${year}-${month}-${day}`;
     }
   
-    // Otherwise, format the time (hours, minutes, and seconds) for other dates
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
   
-    // Return the full date with time in "YYYY-MM-DD HH:mm:ss" format
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   };
   

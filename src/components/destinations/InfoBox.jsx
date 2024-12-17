@@ -19,7 +19,7 @@ const InfoItem = styled.p`
 export default function InfoBox() {
 
     const location = useLocation();
-    const formData = location.state; // Hent formData direkte fra state
+    const formData = location.state; 
 
   return (
     <>

@@ -52,14 +52,13 @@ const Button = styled.button`
   }
 `;
 
-// Component
 function LogIn({ login }) {
   const init = { username: '', password: '' };
   const [loginCredentials, setLoginCredentials] = useState(init);
 
   const performLogin = (evt) => {
     evt.preventDefault();
-    login(loginCredentials.username, loginCredentials.password); // Call login function from props
+    login(loginCredentials.username, loginCredentials.password); 
   };
 
   const onChange = (evt) => {
@@ -99,7 +98,6 @@ function LogIn({ login }) {
   );
 }
 
-// Add PropTypes validation for the login function prop
 LogIn.propTypes = {
   login: PropTypes.func.isRequired,
 };

@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types'; 
 import facade from '../util/apiFacade';
 
 function LoggedIn({ loggedIn }) {
   const [dataFromServer, setDataFromServer] = useState('Loading...');
 
   useEffect(() => {
-    // Example of fetching data if user is logged in
     if (loggedIn) {
-      facade.fetchData('/some-protected-endpoint') // Example of protected endpoint
+      facade.fetchData('/some-protected-endpoint') 
         .then((data) => setDataFromServer(data))
         .catch((err) => console.error('Error fetching data:', err));
     }
@@ -30,9 +29,8 @@ function LoggedIn({ loggedIn }) {
   );
 }
 
-// Add PropTypes validation for 'loggedIn' prop
 LoggedIn.propTypes = {
-  loggedIn: PropTypes.bool.isRequired, // Validation for loggedIn prop
+  loggedIn: PropTypes.bool.isRequired,
 };
 
 export default LoggedIn;

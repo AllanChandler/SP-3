@@ -99,7 +99,6 @@ const Header = ({ loggedIn, username, logout }) => {
   );
 };
 
-// Add PropTypes validation for 'loggedIn' prop
 Header.propTypes = {
   loggedIn: PropTypes.bool.isRequired,
   username: PropTypes.string.isRequired,

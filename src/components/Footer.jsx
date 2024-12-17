@@ -17,7 +17,7 @@ const FooterWrapper = styled.footer.withConfig({
   z-index: 1000;
 `;
 
-const Footer = ({ isSticky = false }) => {  // Default value provided here
+const Footer = ({ isSticky = false }) => {  
   return (
     <FooterWrapper $isSticky={isSticky}>
       <p>&copy; 2024 JourneyHub. All Rights Reserved.</p>

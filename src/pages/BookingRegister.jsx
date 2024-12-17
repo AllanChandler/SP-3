@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import Footer from '../components/Footer';
 import facade from '../util/apiFacade';
 
-// Styled Components
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -60,7 +59,7 @@ const SubmitButton = styled.button`
 const BookingRegister = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { selectedFlightData } = location.state || {}; // Get flight data
+  const { selectedFlightData } = location.state || {}; 
 
   console.log(selectedFlightData);
 
@@ -93,7 +92,6 @@ const BookingRegister = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Validate the form
     if (!selectedFlightData) {
       alert('No flight data available!');
       setIsSubmitting(false);
@@ -106,41 +104,34 @@ const BookingRegister = () => {
       return;
     }
 
-    // Registration data
     const registrationData = {
       username: formData.email,
       password: formData.password1,
     };
 
-    // Function to format date as YYYY-MM-DD
     const formatDate = (date) => {
       const d = new Date(date);
-      return d.toISOString().split('T')[0]; // Get the date part (YYYY-MM-DD)
+      return d.toISOString().split('T')[0]; 
     };
 
-    // Function to format date as YYYY-MM-DDTHH:mm:ss
     const formatDateWithTime = (date) => {
       const d = new Date(date);
-      return d.toISOString().split('.')[0]; // Get the full ISO string without milliseconds
+      return d.toISOString().split('.')[0]; 
     };
 
-    // Split the "destinationCity" into city and country
     const [city] = selectedFlightData.arrivalCity.split(',').map(str => str.trim());
 
-    // Booking data
     const bookingData = {
-      destinationCity: city,  // Send only the city to the API
+      destinationCity: city,  
       departureDate: formatDateWithTime(selectedFlightData.departureDate),  
       arrivalDate: formatDateWithTime(selectedFlightData.returnDate),
       bookingDate: formatDate(new Date()),
-      status: 'PENDING'  // Add status as 'PENDING'
+      status: 'PENDING'  
     };
 
     try {
-      // Register the user
       await facade.register(registrationData.username, registrationData.password);
 
-      // Submit the booking
       const bookingResponse = await fetch('https://travel.schoolcode.dk/travel/bookings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -167,7 +158,6 @@ const BookingRegister = () => {
     
   };
 
-  // Check if all required fields are filled out and passwords match
   const isFormValid =
     formData.firstname &&
     formData.lastname &&

@@ -82,8 +82,8 @@ const Button = styled.button`
 // eslint-disable-next-line react/prop-types
 export default function FlightOverview({ IsLoggedIn }) {
   const location = useLocation();
-  const formData = location.state; // Get form data from state
-  const navigate = useNavigate(); // Hook for navigation
+  const formData = location.state; 
+  const navigate = useNavigate(); 
 
   const flightOptions = [
     {
@@ -130,7 +130,7 @@ export default function FlightOverview({ IsLoggedIn }) {
 
   const formatDateWithTime = (date) => {
     const d = new Date(date);
-    return d.toISOString().split('.')[0]; // Get full ISO string without milliseconds
+    return d.toISOString().split('.')[0]; 
   };
 
   const handleConfirm = async () => {
@@ -145,7 +145,7 @@ export default function FlightOverview({ IsLoggedIn }) {
       arrivalCity: formData.destination,
       departureDate: formData.departureDate,
       returnDate: formData.returnDate || null,
-      bookingDate: new Date().toISOString(), // Current date as booking date
+      bookingDate: new Date().toISOString(), 
     };
 
     const [city] = selectedFlightData.arrivalCity.split(',').map((str) => str.trim());
@@ -155,29 +155,27 @@ export default function FlightOverview({ IsLoggedIn }) {
       departureDate: formatDateWithTime(selectedFlightData.departureDate),
       arrivalDate: formatDateWithTime(selectedFlightData.returnDate),
       bookingDate: formatDateWithTime(new Date()),
-      status: "PENDING", // Booking status
+      status: "PENDING", 
     };
 
     if (IsLoggedIn) {
       try {
 
-        // Send booking data to server
         const response = await fetch('https://travel.schoolcode.dk/travel/bookings', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(bookingData), // Send booking data as JSON
+          body: JSON.stringify(bookingData), 
         });
 
         if (!response.ok) {
           throw new Error('Booking failed. Please try again.');
         }
 
-        const result = await response.json(); // Server response
+        const result = await response.json(); 
         console.log(result);
         
-        // Navigate to confirmation page
         navigate('/confirmation', {
           state: { selectedFlightData },
         });
@@ -187,7 +185,6 @@ export default function FlightOverview({ IsLoggedIn }) {
         alert('Booking failed.');
       }
     } else {
-      // Navigate to booking page if user is not logged in
       navigate('/booking', { state: { selectedFlightData } });
     }
   };
