@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import CountryInfo from '../components/country/CountryInfo';
+import CountryInfo from '../components/CountryInfo';
 import CountryMapSelection from '../components/CountryMapSelection';
 import Footer from '../components/Footer';
 import styled from 'styled-components';
