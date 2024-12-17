@@ -411,8 +411,7 @@ const TravelAdministration = () => {
           <p>No bookings available.</p>
         )}
       </TableContainer>
-
-      <Footer />
+      <Footer isSticky={false} />
     </Box>
   );
 };
