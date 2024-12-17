@@ -2,10 +2,10 @@ import { useLocation } from 'react-router-dom';
 
 const OrderConfirmation = () => {
   const location = useLocation();
-  const { selectedFlightData } = location.state || {}; // Henter selectedFlight fra location.state
+  const { selectedFlightData } = location.state || {}; 
 
 
-  console.log("Valgte flydata:", selectedFlightData); // Debugging - sørg for at data bliver logget korrekt
+  console.log("Valgte flydata:", selectedFlightData); 
 
   return (
     <div>

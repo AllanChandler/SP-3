@@ -140,7 +140,7 @@ const ReviewPage = () => {
   }, []);
 
   const handleAddReview = async () => {
-    // Validate the review form
+    
     if (!newReview.comment || !/[a-zA-Z]/.test(newReview.comment)) {
       setErrorMessage('Comment is required and must contain at least one letter.');
       return;
@@ -149,13 +149,13 @@ const ReviewPage = () => {
       setErrorMessage('Rating must be between 1 and 5.');
       return;
     }
-    setErrorMessage(''); // Clear any previous error
+    setErrorMessage(''); 
 
     try {
       const addedReview = await facade.addReview(newReview);
       setReviews([...reviews, addedReview]);
       setNewReview({ comment: '', rating: 0, destinationId: null });
-      setIsAddingReview(false);  // Hide the review form after successful submission
+      setIsAddingReview(false);  
       alert('Review added successfully');
     } catch (error) {
       console.error('Error adding review:', error);
