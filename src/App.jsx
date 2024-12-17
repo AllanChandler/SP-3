@@ -3,11 +3,11 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import GlobalStyle from './styles/GlobalStyle';
 import Header from './components/Header';
 import MainPage from './pages/MainPage';
-import VisionPage from './pages/VisionPage';
-import ReviewPage from './pages/ReviewPage';
+import VisionPage from './pages/Vision';
+import ReviewPage from './pages/Review';
 import Login from './components/LogIn';
 import TravelAdministration from './pages/TravelAdministration';
-import CountryInfoPage from './pages/CountryInfoPage';
+import CountryInfoPage from './pages/CountryInfo';
 import DestinationsOverView from './pages/DestinationsOverView';
 import BookingRegister from './pages/BookingRegister';
 import OrderConfirmation from './pages/OrderConfirmation';
@@ -67,7 +67,7 @@ const App = () => {
         <Route path="/reviews" element={<ReviewPage />} />
         <Route path="/admin" element={<TravelAdministration />} />
         <Route path="/country-info" element={<CountryInfoPage />} />
-        <Route path="/destinations" element={<DestinationsOverView />} />
+        <Route path="/destinations" element={<DestinationsOverView loggedIn={loggedIn} />} />
         <Route path="/booking" element={<BookingRegister registerUser={registerUser} />} />
         <Route path="/confirmation" element={<OrderConfirmation />} />
         

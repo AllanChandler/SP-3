@@ -186,7 +186,7 @@ const ReviewPage = () => {
   return (
     <Box>
       <Title>Reviews</Title>
-      <Text>Here you can add new reviews and see reviews from other people.</Text>
+      <Text>Her kan du tilføje nye anmeldelser og se anmeldelser fra andre.</Text>
 
       <div>
         <SectionTitle>Destinations</SectionTitle>

@@ -248,8 +248,6 @@ const TravelAdministration = () => {
   };
   
   
-  
-  
 
   if (unauthorized) {
     return (

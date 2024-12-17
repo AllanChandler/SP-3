@@ -62,6 +62,8 @@ const BookingRegister = () => {
   const navigate = useNavigate();
   const { selectedFlightData } = location.state || {}; // Get flight data
 
+  console.log(selectedFlightData);
+
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -87,6 +89,7 @@ const BookingRegister = () => {
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -110,16 +113,16 @@ const BookingRegister = () => {
     };
 
     // Function to format date as YYYY-MM-DD
-  const formatDate = (date) => {
-    const d = new Date(date);
-    return d.toISOString().split('T')[0]; // Get the date part (YYYY-MM-DD)
-  };
+    const formatDate = (date) => {
+      const d = new Date(date);
+      return d.toISOString().split('T')[0]; // Get the date part (YYYY-MM-DD)
+    };
 
-  // Function to format date as YYYY-MM-DDTHH:mm:ss
-  const formatDateWithTime = (date) => {
-    const d = new Date(date);
-    return d.toISOString().split('.')[0]; // Get the full ISO string without milliseconds
-  };
+    // Function to format date as YYYY-MM-DDTHH:mm:ss
+    const formatDateWithTime = (date) => {
+      const d = new Date(date);
+      return d.toISOString().split('.')[0]; // Get the full ISO string without milliseconds
+    };
 
     // Split the "destinationCity" into city and country
     const [city] = selectedFlightData.arrivalCity.split(',').map(str => str.trim());
@@ -150,20 +153,18 @@ const BookingRegister = () => {
 
       console.log('Booking successful.');
       alert('Registration and booking completed successfully!');
-      navigate('/confirmation');
+      navigate("/confirmation", { state: { selectedFlightData } });
     } catch (error) {
       console.error('Error:', error);
-    if (error.status === 400) {
-      alert('The email you provided is already registered. Please log in or use a different email.');
-    }else{
-      alert(`Booking failed: Please check the informations and try again`);
-
-  
-    
+      if (error.status === 400) {
+        alert('The email you provided is already registered. Please log in or use a different email.');
+      } else {
+        alert(`Booking failed: Please check the informations and try again`);
+      }
     }
-  }
 
     setIsSubmitting(false);
+    
   };
 
   // Check if all required fields are filled out and passwords match

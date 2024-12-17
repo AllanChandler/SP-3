@@ -2,7 +2,10 @@ import { useLocation } from 'react-router-dom';
 
 const OrderConfirmation = () => {
   const location = useLocation();
-  const { selectedFlight } = location.state || {}; // For at undgå fejl, hvis der ikke er state
+  const { selectedFlightData } = location.state || {}; // Henter selectedFlight fra location.state
+
+
+  console.log("Valgte flydata:", selectedFlightData); // Debugging - sørg for at data bliver logget korrekt
 
   return (
     <div>
@@ -10,17 +13,18 @@ const OrderConfirmation = () => {
       <p>Tak for din bestilling! Vi er glade for at bekræfte, at din bestilling er blevet gennemført.</p>
       <p>Vi ønsker dig en god rejse!</p>
 
-      {selectedFlight && (
+      {selectedFlightData ? (
         <div>
           <h2>Flyinformation</h2>
-          <p><strong>Udgående flyrejse:</strong> {selectedFlight.departureCity} → {selectedFlight.arrivalCity}</p>
-          <p><strong>Indgående flyrejse:</strong> {selectedFlight.returnFlight.departureCity} → {selectedFlight.returnFlight.arrivalCity}</p>
-          <p><strong>Pris:</strong> {selectedFlight.price}</p>
+          <p><strong>Udgående flyrejse:</strong> {selectedFlightData.departureCity} → {selectedFlightData.arrivalCity}</p>
+          <p><strong>Indgående flyrejse:</strong> {selectedFlightData.returnFlight?.departureCity} → {selectedFlightData.returnFlight?.arrivalCity}</p>
+          <p><strong>Pris:</strong> {selectedFlightData.price}</p>
         </div>
+      ) : (
+        <p>Ingen flyinformation tilgængelig.</p>
       )}
     </div>
   );
 };
 
 export default OrderConfirmation;
-
